@@ -3,8 +3,7 @@
 # dependencies
 node_modules
 mychaindata --nodiscover
-build
-cli_app
+
 
 
 # testing
