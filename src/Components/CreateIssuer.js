@@ -9,18 +9,35 @@ export class CreateIssuer extends React.Component {
 
 
    this.state = {
+     lod: '',
+     lodId: '',
      idUport: '',
      name: '',
      imagePreviewUrl: '',
      url: '',
      email: '',
+     publicKey: '',  
+     revocationList: '',
 
      };
+     this.handleLodChange = this.handleLodChange.bind(this);
+     this.handleLodIdChange = this.handleLodIdChange.bind(this);
      this.handleIdUportChange = this.handleIdUportChange.bind(this);
      this.handleNameChange = this.handleNameChange.bind(this);
      this.handleUrlChange = this.handleUrlChange.bind(this);
      this.handleEmailChange = this.handleEmailChange.bind(this);
+     this.handlePublicKeyChange = this.handlePublicKeyChange.bind(this);
+     this.handleRevocationListChange = this.handleRevocationListChange.bind(this);
+
      }
+
+       handleLodIdChange (evt) {
+         this.setState({ lodId: evt.target.value});
+       } 
+     
+       handleLodChange (evt) {
+         this.setState({ lod: evt.target.value });
+       }
 
        handleIdUportChange (evt) {
          this.setState({ idUport: evt.target.value});
@@ -35,7 +52,12 @@ export class CreateIssuer extends React.Component {
        handleEmailChange (evt) {
          this.setState({ email: evt.target.value });
        }
-
+       handlePublicKeyChange (evt) {
+         this.setState({ publicKey: evt.target.value });         
+       }
+       handleRevocationListChange (evt) {
+         this.setState({ revocationList: evt.target.value });
+       }
 
 
 
@@ -44,22 +66,28 @@ export class CreateIssuer extends React.Component {
 
  _downloadTxtFile = () => {
    var element = document.createElement("a");
+   var output0 = this.state.lod
    var output1 = this.state.idUport
    var output2 = this.state.name
    var output3 = "https:ipfs.io/ipfs/" + this.state.ipfsHash
    var output4 = this.state.url
    var output5 = this.state.email
+   var output6 = this.state.lodId
+   var output7 = this.state.publicKey
+   var output8 = this.state.revocationList
 
 
-
-   var textToSave = "{  \"@context\":         \"https://w3id.org/openbadges/v2\"," +
-                    "\"type\"\: \"Issuer\",\"uportid\"\]," +
-                    "\"id\": \"" + output1 + "\", " +
+   var textToSave = "{ \"@context\": \"https://w3id.org/openbadges/v2\"," +
+                    "\"type\"\:[\"Issuer\",\"" + output0 + "\"\]," +
+                    "\"id\": \"" + output6 + "\", " +
+                    "\"idUport\": \"" + output1 + "\", " +
                     "\"name\": \"" + output2 + "\", " +
                     "\"image\": \"" + output3 + "\", " +
                     "\"url\": \"" + output4 + "\", " +
-                    "\"email\": \"" + output5 + "\"" +
-                    "  }"
+                    "\"email\": \"" + output5 + "\", " +
+                    "\"publicKey\": \"" + output7 + "\", " +
+                    "\"revocationList\": \"" + output8 + "\"" +
+                    " }"
 
 
    var file = new Blob([textToSave], {type:"text/plain"});
@@ -125,13 +153,6 @@ export class CreateIssuer extends React.Component {
 
  render(props) {
 
-   // let {imagePreviewUrl} = this.state;
-   // let $imagePreview = null;
-   // if (imagePreviewUrl) {
-   //   $imagePreview = (<img src={imagePreviewUrl}/>);
-   // } else {
-   //   $imagePreview = ();
-   // }
 
    return (
     <div class="container">
@@ -141,6 +162,32 @@ export class CreateIssuer extends React.Component {
 
       <h4>Issuer</h4>
       <form>
+      <div class='mb-6'>
+        <Label for='lod'>
+            LOD string
+        </Label>
+        <Input
+          type='plaintext'
+          class='form-control'
+          name='lod'
+          id='lod'
+          placeholder='The lod string of the issuer'
+          onChange={this.handleLodChange}/>
+        </div>
+
+        <div class='mb-6'>
+        <Label for='lodId'>
+            The lod id of the issuer
+        </Label>
+        <Input
+          type='plaintext'
+          class='form-control'
+          name='IdUport'
+          id='IdUport'
+          placeholder='The lod ID string of the Issuer'
+          onChange={this.handleLodIdChange}/>
+        </div>
+
         <div class='mb-6'>
         <Label for='issuerCreator'>
             Issuer Uport ID
@@ -191,10 +238,38 @@ export class CreateIssuer extends React.Component {
           placeholder='The email address of the issuer' onChange={this.handleEmailChange}/>
         </div>
 
+        <div class='mb-6'>      
+        <Label for='publicKey'>
+            The lod public Key of the issuer
+        </Label>
+        <Input
+          type='plaintext'
+          class='form-control'
+          name='publicKey'
+          id='publicKey'
+          placeholder='The lod public key of the Issuer'
+          onChange={this.handlePublicKeyChange}/>
+        </div>
+
+        <div class='mb-6'>
+        <Label for='publicKey'>
+            The lod revocation List of the issuer
+        </Label>
+        <Input
+          type='plaintext'
+          class='form-control'
+          name='revocationList'
+          id='revocationList'
+          placeholder='The lod revocation List of the Issuer'
+          onChange={this.handleRevocationListChange}/>
+        </div>
+        
+
+
       </form>
       <br/>
       <div class="mb-6">
-        <Label for="Badge image">
+        <Label for="Issuer image">
           Issuer image
         </Label>
         <Form onSubmit={this.onSubmit}>
